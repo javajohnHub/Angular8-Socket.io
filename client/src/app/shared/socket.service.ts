@@ -2,11 +2,6 @@ import * as io from 'socket.io-client';
 
 export class SocketService  {
 
-  static instance: SocketService = null;
-  static isCreating: Boolean = false;
-  public socket: any;
-  private url = 'localhost:4200';
-
   /**
    * constuctor with control handle, that you can not instantiate by new NodoSocket();
    * socket should act as a real singleton, not to have multiple socket connection instances
@@ -21,6 +16,31 @@ export class SocketService  {
 
     console.info('establishing connection to server...');
     this.socket = io.connect(this.url);
+
+  }
+
+  static instance: SocketService = null;
+  static isCreating: Boolean = false;
+  public socket: any;
+  private url = 'localhost:4200';
+
+
+
+
+  /**
+   * get instance wrapper
+   * @returns {SocketService}
+   */
+  public static getInstance(): SocketService {
+
+    if (SocketService.instance === null) {
+      SocketService.isCreating = true;
+      SocketService.instance = new SocketService();
+      SocketService.isCreating = false;
+    }
+
+    console.log('SocketService.instance', SocketService.instance);
+    return SocketService.instance;
 
   }
 
@@ -52,26 +72,6 @@ export class SocketService  {
 
       }
     });
-  }
-
-
-
-
-  /**
-   * get instance wrapper
-   * @returns {SocketService}
-   */
-  public static getInstance(): SocketService {
-
-    if (SocketService.instance === null) {
-      SocketService.isCreating = true;
-      SocketService.instance = new SocketService();
-      SocketService.isCreating = false;
-    }
-
-    console.log('SocketService.instance', SocketService.instance);
-    return SocketService.instance;
-
   }
 
 

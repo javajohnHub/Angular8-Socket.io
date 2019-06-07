@@ -26,8 +26,6 @@ export class PingComponent {
     });
   }
   ping() {
-    console.log('pre ping');
     this.socket.emit('drip');
-    console.log('post ping');
   }
 }
